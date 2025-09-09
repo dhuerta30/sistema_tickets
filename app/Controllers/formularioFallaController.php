@@ -29,26 +29,14 @@ class formularioFallaController {
 
         $artify->fieldHideLable("fecha");
         $artify->fieldDataAttr("fecha", array("style"=>"display:none"));
-        $artify->fieldDataAttr("ubicacion", array("placeholder" => "(Oficina, Piso, etc.)"));
-
-        $artify->formStaticFields("camera", "html", "
+        $artify->fieldTypes("ubicacion", "textarea");
+    
+        /*$artify->formStaticFields("camera", "html", "
             <div style='text-align:center;'>
-                <label for='fileInput' id='btnFoto' class='btn-foto btn-block'></label>
-                <input type='file' id='fileInput' name='foto' accept='image/*' capture='camera'>
+                <input type='file' name='foto' accept='image/*' capture='camera'>
                 <p><strong>Campo Opcional</strong></p>
             </div>
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    const btnFoto = document.getElementById('btnFoto');
-                    // Detectar si es móvil (user agent)
-                    if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                        btnFoto.textContent = '📷 Tomar Foto';
-                    } else {
-                        btnFoto.textContent = 'Seleccionar Imagen';
-                    }
-                });
-            </script>
-        ");
+        ");*/
 
         $artify->buttonHide("cancel");
         $artify->setLangData("save",'Generar Ticket');
@@ -78,7 +66,10 @@ class formularioFallaController {
         $artify->fieldCssClass("fallas", array("fallas"));
         $artify->fieldCssClass("sector_funcionario", array("sector_funcionario"));
 
-        $artify->formFields(array("nombre","fecha","correo", "area", "fallas", "sector_funcionario", "ubicacion", "estado"));
+        $artify->fieldTypes("foto", "FILE_NEW");
+        $artify->fieldAttributes("foto", array("accept" => "image/*", "capture"=>"camera"));
+
+        $artify->formFields(array("nombre","fecha","correo", "area", "fallas", "sector_funcionario", "ubicacion", "estado", "foto"));
         
         $render = $artify->dbTable("tickets")->render("insertform");
         $select2 = $artify->loadPluginJsCode("select2",".sector_funcionario, .fallas");
