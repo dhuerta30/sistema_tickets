@@ -59,15 +59,21 @@ class formularioFallaController {
         $artify->fieldDependent("fallas", "area", "id_area");
 
         $artify->fieldCssClass("fallas", array("fallas"));
+        $artify->fieldCssClass("ubicacion", array("descripcion"));
 
         $artify->fieldCssClass("nombre", array("nombre"));
         $artify->fieldCssClass("correo", array("correo"));
         $artify->fieldCssClass("area", array("area"));
         $artify->fieldCssClass("fallas", array("fallas"));
         $artify->fieldCssClass("sector_funcionario", array("sector_funcionario"));
+        $artify->fieldCssClass("foto", array("foto"));
+
+        $artify->fieldNotMandatory("foto");
 
         $artify->fieldTypes("foto", "FILE_NEW");
         $artify->fieldAttributes("foto", array("accept" => "image/*", "capture"=>"camera"));
+
+        $artify->fieldDesc("foto", "Campo Opcional");
 
         $artify->formFields(array("nombre","fecha","correo", "area", "fallas", "sector_funcionario", "ubicacion", "estado", "foto"));
         
@@ -82,46 +88,8 @@ class formularioFallaController {
     }
 
     public function capturar_foto($data, $obj){
-        $newData = array();
-        $newData["tickets"]["nombre"] = $data["tickets"]["nombre"];
-        $newData["tickets"]["fecha"] = $data["tickets"]["fecha"];
-        $newData["tickets"]["correo"] = $data["tickets"]["correo"];
-        $newData["tickets"]["area"] = $data["tickets"]["area"];
-        $newData["tickets"]["fallas"] = $data["tickets"]["fallas"];
-        $newData["tickets"]["sector_funcionario"] = $data["tickets"]["sector_funcionario"];
-        $newData["tickets"]["estado"] = $data["tickets"]["estado"];
-
-        // Si existe el archivo en $_FILES, lo mapeamos dentro de $data
-        if (isset($_FILES["tickets"]["name"]["foto"])) {
-            $data["tickets"]["foto"] = array(
-                "name"     => $_FILES["tickets"]["name"]["foto"],
-                "type"     => $_FILES["tickets"]["type"]["foto"],
-                "tmp_name" => $_FILES["tickets"]["tmp_name"]["foto"],
-                "error"    => $_FILES["tickets"]["error"]["foto"],
-                "size"     => $_FILES["tickets"]["size"]["foto"],
-            );
-        }
-
-        // Manejo de archivo
-        if (isset($data["tickets"]["foto"]) && is_array($data["tickets"]["foto"]) && $data["tickets"]["foto"]["error"] === 0) {
-            $uploadDir = __DIR__ . "/../libs/artify/uploads/";
-            if (!file_exists($uploadDir)) {
-                mkdir($uploadDir, 0777, true);
-            }
-
-            $nombreArchivo = time() . "_" . basename($data["tickets"]["foto"]["name"]);
-            $rutaDestino   = $uploadDir . $nombreArchivo;
-
-            if (move_uploaded_file($data["tickets"]["foto"]["tmp_name"], $rutaDestino)) {
-                $newData["tickets"]["foto"] = $nombreArchivo;
-            } else {
-                $newData["tickets"]["foto"] = null;
-            }
-        } else {
-            $newData["tickets"]["foto"] = null;
-        }
-
-        return $newData;
+        $data["tickets"]["foto"] = basename($data["tickets"]["foto"]);
+        return $data;
     }
 
     public function insertar_ticket($data, $obj){

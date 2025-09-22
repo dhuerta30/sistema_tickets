@@ -85,6 +85,8 @@
             $(".fallas").val("");
             $(".sector_funcionario").select2("destroy");
             $(".sector_funcionario").val("");
+            $(".descripcion").val("");
+            $(".foto").val("");
             $(".fallas").empty("");
             $(".fallas").html("<option>Seleccionar</option>");
             $(".sector_funcionario").select2();
