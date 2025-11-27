@@ -42,11 +42,11 @@ class formularioFallaController {
         $artify->buttonHide("cancel");
         $artify->setLangData("save",'Generar Ticket');
 
-        $artify->fieldRenameLable("fallas", "¿Qué problema presenta?");
+        $artify->fieldRenameLable("fallas", "¿Cual es su requerimiento?");
         $artify->fieldRenameLable("nombre", "Nombre Completo del Funcionario");
         $artify->fieldRenameLable("area", "Unidad");
         $artify->fieldRenameLable("correo", "Correo del Funcionario");
-        $artify->fieldRenameLable("sector_funcionario", "Sector Funcionario");
+        $artify->fieldRenameLable("sector_funcionario", "Unidad Origen Requerimiento");
         $artify->fieldRenameLable("ubicacion", "Descripción");
 
         $artify->relatedData('sector_funcionario','sector','id_sector','nombre_sector');
