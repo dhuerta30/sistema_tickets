@@ -91,7 +91,7 @@ class formularioFallaController {
         if (!empty($data["tickets"]["foto"])) {
 
             // Extensiones permitidas
-            $extPermitidas = ["png", "PNG", "jpg", "jpeg", "webp"];
+            $extPermitidas = ["png", "PNG", "jpg", "jpeg", "webp", "svg"];
 
             // separar fotos por coma
             $fotos = explode(",", $data["tickets"]["foto"]);
