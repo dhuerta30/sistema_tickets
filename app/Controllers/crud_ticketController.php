@@ -174,9 +174,11 @@ class crud_ticketController {
         return $data;
     }
 
-    public function formattableTickets($data, $obj){
+   public function formattableTickets($data, $obj){
         if($data){
             foreach($data as &$item){
+
+                // PRIORIDAD
                 if($item["prioridad"] == "Alta"){
                     $item["prioridad"] = "<div class='badge badge-danger'>Alta</div>";
                 } else if($item["prioridad"] == "Media"){
@@ -185,21 +187,39 @@ class crud_ticketController {
                     $item["prioridad"] = "<div class='badge badge-primary'>Baja</div>";
                 }
 
+                // FOTOS
                 if (!empty($item["foto"])) {
-                    $fotoUrl = $_ENV["BASE_URL"] . "app/libs/artify/uploads/" . $item["foto"];
-                    $item["foto"] = '
-                        <a href="' . $fotoUrl . '" data-fancybox="gallery" data-caption="Foto">
-                            <img src="' . $fotoUrl . '" alt="Foto" width="150" style="border-radius:8px; cursor:pointer;" />
-                        </a>
-                    ';
+
+                    // dividir fotos por coma
+                    $fotos = explode(",", $item["foto"]);
+                    $html = "";
+
+                    foreach ($fotos as $foto) {
+
+                        $foto = trim($foto);
+                        if ($foto === "") continue;
+
+                        // si la ruta ya es completa, solo agregamos BASE_URL adelante
+                        $fotoUrl = $_ENV["BASE_URL"] . "app/libs/artify/uploads/" . $foto;
+
+                        $html .= '
+                            <a href="' . $fotoUrl . '" data-fancybox="gallery-' . $item["id_tickets"] . '" data-caption="Foto">
+                                <img src="' . $fotoUrl . '" alt="Foto" width="120" 
+                                    style="border-radius:8px; cursor:pointer; margin-right:6px;" />
+                            </a>
+                        ';
+                    }
+
+                    $item["foto"] = $html;
+
                 } else {
                     $item["foto"] = "<span class='badge badge-danger'>Sin Foto</span>";
                 }
-
             }
         }
         return $data;
     }
+
 
     public function asignar_tickets($data, $obj){
         if($_SESSION["usuario"][0]["idrol"] == 3){ 

@@ -15,6 +15,7 @@ class formularioFallaController {
         $fecha = date("Y-m-d");
 
         $artify = DB::ArtifyCrud();
+        //$artify->addPlugin("bootstrap-fileinput-master");
         $artify->addPlugin("select2");
         $artify->addCallback("before_insert", [$this, "capturar_foto"]);
         $artify->addCallback("after_insert", [$this, "insertar_ticket"]);
@@ -70,7 +71,7 @@ class formularioFallaController {
 
         $artify->fieldNotMandatory("foto");
 
-        $artify->fieldTypes("foto", "FILE_NEW");
+        $artify->fieldTypes("foto", "file_multi");
         $artify->fieldAttributes("foto", array("accept" => "image/*", "capture"=>"camera"));
 
         $artify->fieldDesc("foto", "Campo Opcional");
@@ -79,18 +80,38 @@ class formularioFallaController {
         
         $render = $artify->dbTable("tickets")->render("insertform");
         $select2 = $artify->loadPluginJsCode("select2",".sector_funcionario, .fallas");
+        //$input = $artify->loadPluginJsCode("bootstrap-fileinput-master","input[type=file]");
 
         $stencil = new ArtifyStencil();
         echo $stencil->render('formularioFalla', [
             'render' =>$render,
             'select2' => $select2
+            //'input' => $input
         ]);
     }
 
     public function capturar_foto($data, $obj){
-        $data["tickets"]["foto"] = basename($data["tickets"]["foto"]);
+        if (!empty($data["tickets"]["foto"])) {
+
+            // separar fotos por coma
+            $fotos = explode(",", $data["tickets"]["foto"]);
+            $soloNombres = [];
+
+            foreach ($fotos as $foto) {
+                $foto = trim($foto);
+                if ($foto === "") continue;
+
+                // tomar solo el nombre del archivo
+                $soloNombres[] = basename($foto);
+            }
+
+            // unir nuevamente como "foto1,foto2,foto3"
+            $data["tickets"]["foto"] = implode(",", $soloNombres);
+        }
+
         return $data;
     }
+
 
     public function insertar_ticket($data, $obj){
         $id = $data;
