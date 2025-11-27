@@ -92,6 +92,13 @@
             $(".sector_funcionario").select2();
           }
         });
+      } else {
+        Swal.fire({
+          icon: "error",
+          text: json["error"],
+          confirmButtonText: "Aceptar",
+          allowOutsideClick: false
+        });
       }
     });
 </script>
