@@ -15,7 +15,6 @@ class formularioFallaController {
         $fecha = date("Y-m-d");
 
         $artify = DB::ArtifyCrud();
-        //$artify->addPlugin("bootstrap-fileinput-master");
         $artify->addPlugin("select2");
         $artify->addCallback("before_insert", [$this, "capturar_foto"]);
         $artify->addCallback("after_insert", [$this, "insertar_ticket"]);
@@ -80,13 +79,11 @@ class formularioFallaController {
         
         $render = $artify->dbTable("tickets")->render("insertform");
         $select2 = $artify->loadPluginJsCode("select2",".sector_funcionario, .fallas");
-        //$input = $artify->loadPluginJsCode("bootstrap-fileinput-master","input[type=file]");
 
         $stencil = new ArtifyStencil();
         echo $stencil->render('formularioFalla', [
             'render' =>$render,
             'select2' => $select2
-            //'input' => $input
         ]);
     }
 
