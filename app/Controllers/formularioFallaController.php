@@ -90,6 +90,9 @@ class formularioFallaController {
     public function capturar_foto($data, $obj){
         if (!empty($data["tickets"]["foto"])) {
 
+            // Extensiones permitidas
+            $extPermitidas = ["png", "PNG", "jpg", "jpeg", "webp"];
+
             // separar fotos por coma
             $fotos = explode(",", $data["tickets"]["foto"]);
             $soloNombres = [];
@@ -98,8 +101,22 @@ class formularioFallaController {
                 $foto = trim($foto);
                 if ($foto === "") continue;
 
-                // tomar solo el nombre del archivo
-                $soloNombres[] = basename($foto);
+                $nombre = basename($foto);
+
+                // obtener extensión del archivo
+                $ext = pathinfo($nombre, PATHINFO_EXTENSION);
+
+                // validar extensión
+                if (!in_array($ext, $extPermitidas)) {
+                    $error_msg = array(
+                        "message" => "",
+                        "error" => "El Archivo Subido no es una imagen",
+                        "redirectionurl" => ""
+                    );
+                    die(json_encode($error_msg));
+                }
+
+                $soloNombres[] = $nombre;
             }
 
             // unir nuevamente como "foto1,foto2,foto3"
@@ -108,7 +125,6 @@ class formularioFallaController {
 
         return $data;
     }
-
 
     public function insertar_ticket($data, $obj){
         $id = $data;
