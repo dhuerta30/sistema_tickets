@@ -8,7 +8,6 @@ use App\core\Request;
 use App\core\ArtifyStencil;
 use App\core\Redirect;
 use App\core\DB;
-use Coderatio\SimpleBackup\SimpleBackup;
 use App\Models\DatosPacienteModel;
 use App\Models\PageModel;
 use App\Models\UsuarioMenuModel;
@@ -678,23 +677,34 @@ class HomeController
 			$id = $queryfy->select("backup");
 
 			$exportDirectory = realpath(__DIR__ . '/../libs/artify/uploads');
-
-			// Verificar si el directorio existe y, si no, intentar crearlo
 			if (!is_dir($exportDirectory) && !mkdir($exportDirectory, 0777, true)) {
 				die('Error al crear el directorio de exportación');
 			}
 
-			$simpleBackup = SimpleBackup::setDatabase([
-				$_ENV['DB_NAME'],
-				$_ENV['DB_USER'],
-				$_ENV['DB_PASS'],
-				$_ENV['DB_HOST']
-			])->storeAfterExportTo($exportDirectory, "procedimiento" . time() . ".sql");
+			$fileName = "procedimiento" . time() . ".sql";
+			$fullPath = $exportDirectory . DIRECTORY_SEPARATOR . $fileName;
 
-			$file = $_ENV["BASE_URL"] . $_ENV['UPLOAD_URL'] . $simpleBackup->getExportedName();
+			$mysqldumpPath = 'C:\laragon\bin\mysql\mysql-8.0.30-winx64\bin\mysqldump.exe';
 
+			$command = sprintf(
+				'"%s" --host=%s --user=%s --password=%s %s > "%s" 2>&1',
+				$mysqldumpPath,
+				escapeshellarg($_ENV['DB_HOST']),
+				escapeshellarg($_ENV['DB_USER']),
+				escapeshellarg($_ENV['DB_PASS']),
+				escapeshellarg($_ENV['DB_NAME']),
+				$fullPath
+			);
+
+			exec($command, $output, $returnVar);
+
+			if ($returnVar !== 0 || !file_exists($fullPath)) {
+				echo json_encode(['error' => 'Error al generar el respaldo: ' . implode("\n", $output)]);
+				exit;
+			}
+
+			$file = $_ENV["BASE_URL"] . $_ENV['UPLOAD_URL'] . $fileName;
 			$queryfy->insert("backup", array("archivo" => basename($file), "fecha" => $date, "hora" => $hour, "usuario" => $user));
-
 			echo json_encode(['file' => $file, 'success' => 'Tus datos se han respaldado con éxito ']);
 		}
 	}

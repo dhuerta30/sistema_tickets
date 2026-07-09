@@ -41,6 +41,7 @@ class Queryfy
     private $dbPassword;
     private $dbRollBack;
     private $dbTansactionStatus;
+    private $characterSet;
     private $values = array();
     private $subSQL = "";
     private $joinString = "";
