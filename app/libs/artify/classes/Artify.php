@@ -25,6 +25,7 @@ Class Artify {
     private $fieldValidation;
     private $fields;
     private $fieldAttr;
+    private $whereCondition = array();
     private $fieldsStatic;
     private $fieldsRemove;
     private $fieldType;

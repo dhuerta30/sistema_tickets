@@ -3366,6 +3366,7 @@ class HomeController
 		$artify->setSettings("hideAutoIncrement", false);
 		$artify->setSettings("required", false);
 		$artify->addCallback("before_update", [$this, "editar_perfil"]);
+		$artify->relatedData('email','tecnicos','id_tecnicos','correo');
 		$artify->fieldGroups("Name",array("nombre","email"));
 		$artify->fieldGroups("Name2",array("usuario","password"));
 		$artify->fieldGroups("Name3",array("idrol","avatar"));
