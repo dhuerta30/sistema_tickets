@@ -3,7 +3,7 @@
 Class ArtifyAjaxCtrl {
 
     public function handleRequest() {
-        $instanceKey = isset($_REQUEST["artify_instance"]) ? filter_var($_REQUEST["artify_instance"], FILTER_SANITIZE_STRING) : null;
+        $instanceKey = isset($_REQUEST["artify_instance"]) ? strip_tags(trim($_REQUEST["artify_instance"])) : null;
         
         if(!isset($_SESSION["artify_sess"][$instanceKey])){
             die("La sesión ha caducado. Actualice su página para continuar.");
@@ -14,8 +14,8 @@ Class ArtifyAjaxCtrl {
             die("Ocurrió un error. Por favor, inténtelo de nuevo más tarde.");
         }
 
-        $action = isset($_POST["artify_data"]["action"]) ? filter_var($_POST["artify_data"]["action"], FILTER_SANITIZE_STRING) : null;
-        $data = isset($_POST["artify_data"]) ? filter_var_array($_POST["artify_data"], FILTER_SANITIZE_STRING) : [];
+        $action = isset($_POST["artify_data"]["action"]) ? strip_tags(trim($_POST["artify_data"]["action"])) : null;
+        $data = isset($_POST["artify_data"]) ? array_map('strip_tags', $_POST["artify_data"]) : [];
         $post = $_POST;
         if (isset($_FILES)) {
             $post = array_merge($_FILES, $post);
