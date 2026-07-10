@@ -9,8 +9,7 @@ Class ArtifyErrorCtrl {
         if($override){
             echo $error;
             die();
-        }
-            
+        }   
     }
 
     function getErrors() {
