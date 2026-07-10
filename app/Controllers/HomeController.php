@@ -752,7 +752,7 @@ class HomeController
 		$artify = DB::ArtifyCrud();
 		$queryfy = $artify->getQueryfyObj();
 		$queryfy->where("id_menu", $idMenu, "=");
-		$queryfy->orderBy(array("orden_submenu asc")); // Ajusta el nombre de la columna de ordenación si es diferente
+		$queryfy->orderBy(array("orden_submenu asc"));
 		$data = $queryfy->select("submenu");
 		return $data;
 	}	
