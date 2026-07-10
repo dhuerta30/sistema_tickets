@@ -344,9 +344,14 @@ class HomeController
 		$artify->setSettings("checkboxCol", false);
 		$render = $artify->dbTable("usuario")->render();
 
+		$menu = HomeController::menuDB();
+		$current_url = $_SERVER['REQUEST_URI'];
+
 		$stencil = new ArtifyStencil();
-        echo $stencil->render('acceso_menus', [
-			'render' => $render
+		echo $stencil->render('acceso_menus', [
+			'render' => $render,
+			'menu'   => $menu,
+			'current_url' => $current_url
 		]);
 	}
 
