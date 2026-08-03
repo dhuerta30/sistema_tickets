@@ -80,7 +80,7 @@ class formularioFallaController {
                     </div>
                     <div class="form-section">
                         <h6>
-                            <i class="fas fa-tools"></i>
+                            <i class="fa fa-wrench"></i>
                             Información del requerimiento
                         </h6>
                         <div class="form-group row">
