@@ -275,9 +275,19 @@ class crud_ticketController {
         ]);
     }
 
-    public function insertar_area($data, $obj){
-        $nombre = $data["area"]["nombre"];
-        
+    public function insertar_area($data, $obj)
+    {
+        $nombre = trim($data["area"]["nombre"]);
+        $existe = $obj->DBQuery(
+            "SELECT COUNT(*) as total FROM areas WHERE nombre = ?",
+            [$nombre]
+        );
+        if ($existe[0]['total'] > 0) {
+            return [
+                "error" => true,
+                "message" => "El área '$nombre' ya existe."
+            ];
+        }
         return $data;
     }
 
