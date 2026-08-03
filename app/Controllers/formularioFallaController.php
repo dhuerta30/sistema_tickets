@@ -42,7 +42,6 @@ class formularioFallaController {
                                         <p class="pdocrud_help_block help-block form-text with-errors"></p>
                                     </div>
                                 </div>
-
                                 <div class="form-group row">
                                     <label class="control-label col-md-3 col-form-label">Correo:</label>
                                     <div class="col-md-9">
