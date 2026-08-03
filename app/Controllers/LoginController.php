@@ -34,28 +34,52 @@ class LoginController {
         $artify = DB::ArtifyCrud();
 		$configuracion = HomeController::configuracion();
 		$html_template = '
-		<div class="container mt-5">
-			<div class="row d-flex justify-content-center">
-				<div class="col-xl-6">
-					<div class="card px-5 py-5 bg-light shadow-lg" id="form1">
-						<p class="mb-3 mt-3 text-center font-weight-bold">Acceso</p>
-						<center><img class="w-25" src="'.$_ENV["BASE_URL"]. "app/libs/artify/uploads/" . $configuracion[0]["logo_login"].'"></center>
-						<p class="mb-3 mt-3 text-center font-weight-bold"></p>
-						<div class="form-data">
-							<div class="form-group usuario_col">
-								<label>Usuario</label>
-								{usuario}
-								<p class="ertify_help_block help-block form-text with-errors"></p>
-							</div>
-							<div class="form-group">
-								<label>Contraseña</label>
-								{password}
-								<p class="ertify_help_block help-block form-text with-errors"></p>
-							</div>
-							<div class="mb-2"> <button v-on:click.stop.prevent="submit" class="btn btn-primary w-100">Acceder</button> </div>
-							<a class="btn btn-info btn-block" href="'.$_ENV["BASE_URL"].'recuperar">Recuperar Clave</a>
-						</div>
+		<div class="hospital-login-wrapper">
+			<div class="hospital-login-card">
+				<div class="hospital-header">
+					<div class="hospital-icon">
+						<i class="fas fa-hospital"></i>
 					</div>
+					<h3>Mesa de Ayuda</h3>
+					<p>Sistema de Tickets Hospitalario</p>
+				</div>
+				<div class="hospital-logo">
+					<img src="'.$_ENV["BASE_URL"]."app/libs/artify/uploads/".$configuracion[0]["logo_login"].'">
+				</div>
+				<div class="form-data">
+					<div class="form-group usuario_col">
+						<label>
+							<i class="fas fa-user"></i>
+							Usuario
+						</label>
+						{usuario}
+						<p class="ertify_help_block help-block form-text with-errors"></p>
+					</div>
+					<div class="form-group">
+						<label>
+							<i class="fas fa-lock"></i>
+							Contraseña
+						</label>
+						{password}
+						<p class="ertify_help_block help-block form-text with-errors"></p>
+					</div>
+					<button 
+						v-on:click.stop.prevent="submit" 
+						class="btn btn-primary btn-login btn-block">
+						<i class="fas fa-sign-in-alt"></i>
+						Ingresar al sistema
+					</button>
+					<a class="btn btn-outline-secondary btn-block mt-3" 
+					href="'.$_ENV["BASE_URL"].'recuperar">
+						<i class="fas fa-key"></i>
+						Recuperar contraseña
+					</a>
+				</div>
+				<div class="hospital-footer">
+					<small>
+						<i class="fas fa-shield-alt"></i>
+						Acceso autorizado personal hospitalario
+					</small>
 				</div>
 			</div>
 		</div>';
