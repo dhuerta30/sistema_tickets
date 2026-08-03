@@ -91,7 +91,7 @@ body {
 }
 .select2-selection {
   border-radius:10px!important;
-  min-height:42px!important;
+  min-height:30px!important;
 }
 textarea.form-control {
   min-height:120px;
