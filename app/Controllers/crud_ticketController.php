@@ -265,6 +265,7 @@ class crud_ticketController {
 
 
         $area = DB::ArtifyCrud();
+        $area->addCallback("before_insert", [$this, "insertar_area"]);
         $render_area = $area->dbTable("area")->render();
 
         $stencil = new ArtifyStencil();
@@ -272,6 +273,12 @@ class crud_ticketController {
             'render' => $render,
             'render_area' => $render_area
         ]);
+    }
+
+    public function insertar_area($data, $obj){
+        $nombre = $data["area"]["nombre"];
+        
+        return $data;
     }
 
     public function completar_tickets(){
