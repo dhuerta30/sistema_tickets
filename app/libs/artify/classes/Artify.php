@@ -3002,8 +3002,8 @@ Class Artify {
     }
     
     private function cleanInputData($val) {
-        if (is_string($val) ) {
-            $val = htmlspecialchars($val, ENT_NOQUOTES, 'UTF-8');
+        if (is_string($val)) {
+            $val = htmlspecialchars($val, ENT_QUOTES, 'UTF-8');
         }
         return $val;
     }
@@ -3247,6 +3247,21 @@ Class Artify {
         }
     }
 
+    private function validateColumnName($col, Queryfy $queryfy) {
+        $validCols = $queryfy->columnNames($this->tableName);
+        if (is_array($this->joinTable)) {
+            foreach ($this->joinTable as $join) {
+                $validCols = array_merge($validCols, $queryfy->columnNames($join["table"]));
+            }
+        }
+        $bare = trim(str_replace(array('`'), '', substr(strrchr($col, "."), 1) ?: $col));
+        return in_array($bare, $validCols, true) ? $col : null;
+    }
+
+    private function validateSortDir($dir) {
+        return strtolower($dir) === 'desc' ? 'DESC' : 'ASC';
+    }
+
     private function dbSQL($data) {
         // Llamar al callback para manipular la consulta antes de ejecutarla
         $data = $this->handleCallback('before_sql_data', $data);
@@ -3290,9 +3305,11 @@ Class Artify {
             $orderby = "";
 
             if (isset($data["sortkey"])) {
-                $fieldName = $this->decrypt($data["sortkey"]);
-                $this->sortOrder[$fieldName] = $data["action"];
-                $orderby = " ORDER BY ". $fieldName . " " . $data["action"];
+                $fieldName = $this->validateColumnName($this->decrypt($data["sortkey"]), $queryfy);
+                if ($fieldName !== null) {
+                    $this->sortOrder[$fieldName] = $data["action"];
+                    $orderby = " ORDER BY " . $fieldName . " " . $this->validateSortDir($data["action"]);
+                }
             }
 
             $limitSql = "SELECT {$this->col} FROM {$this->tableName} {$this->sql} {$orderby} LIMIT {$offset}, {$recordPerPage}";
@@ -3880,39 +3897,45 @@ Class Artify {
     
     private function getAutoSuggestData($data) {
         $queryfy = $this->getQueryfyObj();
-        $queryfy->columns = array("DISTINCT(".$this->decrypt($data["search_col"]).")");
+        $col = $this->validateColumnName($this->decrypt($data["search_col"]), $queryfy);
+        if ($col === null && $data["search_col"] !== "all") {
+            return $data["callback"] . "([])";
+        }
+        $queryfy->columns = array("DISTINCT(" . $col . ")");
         if ($data["search_col"] !== "all") {
             $data["search_text"] = "%" . $data["search_text"] . "%";
-            $queryfy->where($this->decrypt($data["search_col"]), $data["search_text"], $this->searchOperator);
+            $queryfy->where($col, $data["search_text"], $this->searchOperator);
         }
         $result = $queryfy->select($this->tableName);
         $output = array();
         foreach($result as $row){
-            $val = $row[$this->decrypt($data["search_col"])];
-            $output[] =  array("id"=>$val,"label"=>$val,"value"=>$val);
+            $val = $row[$col];
+            $output[] = array("id"=>$val,"label"=>$val,"value"=>$val);
         }
-        $json = json_encode($output);
-        return $data["callback"]."(".$json.")";
+        return $data["callback"]."(".json_encode($output).")";
     }
 
     private function getInvoicePDF($data){
-      $sql = $this->xinvoicePrint["sql"];
-      $path = $this->xinvoicePrint["path"];
-      $dataID = $data["id"];
-      $sql = preg_replace('/{[^}]+}/', $dataID, $sql);
-      $data = $this->getQueryfyObj()->executeQuery($sql);
-      require_once($path);
-      $xinvoice = new Xinvoice();
-      $xinvoice->setInvoiceCompleteData($data);
-      $xinvoice->setSettings("output", "F");
-      echo $xinvoice->render();
+        $sql = $this->xinvoicePrint["sql"];
+        $path = $this->xinvoicePrint["path"];
+        $dataID = $data["id"];
+        $sql = preg_replace('/{[^}]+}/', '?', $sql);
+        $result = $this->getQueryfyObj()->DBQuery($sql, array($dataID));
+        require_once($path);
+        $xinvoice = new Xinvoice();
+        $xinvoice->setInvoiceCompleteData($result);
+        $xinvoice->setSettings("output", "F");
+        echo $xinvoice->render();
     }
+
+    private $allowedAjaxCallbacks = array();
 
     private function ajaxAction($data){
         $callback = isset($data["post"]["artify_data"]["function"]) ? $data["post"]["artify_data"]["function"] : "";
-        if (is_callable($callback))
-              return call_user_func($callback, $data, $this);
-      }
+        if (in_array($callback, $this->allowedAjaxCallbacks, true) && is_callable($callback))
+            return call_user_func($callback, $data, $this);
+        return $this->getResponse("invalid_action");
+    }
 
     private function getCloneForm($data = array()) {
         if (isset($data["id"])){
@@ -5586,10 +5609,10 @@ Class Artify {
             case "base64_encode": return base64_encode($val);
             case "md5": return md5($val);
             case "sha1": return sha1($val);
-            default:$method($val);
+            case "password_hash": return password_hash($val, PASSWORD_DEFAULT);
+            default: return password_hash($val, PASSWORD_DEFAULT);
         }
     }
-
     /**
      * Returns an encrypted string
      */
@@ -6577,7 +6600,7 @@ Class Artify {
      *
      * @return   boolean                         return true if file uploaded successfully else false
      */
-    function fileUpload($fileName, $fileUploadPath = "", $maxSize = 10000000, $allowedFileTypes = array()) {
+    function fileUpload($fileName, $fileUploadPath = "", $maxSize = 5000000, $allowedFileTypes = array("jpg","jpeg","png","gif","pdf","doc","docx","xls","xlsx","csv")) {
         if ($this->checkValidFileUpload($fileName, $fileUploadPath, $maxSize, $allowedFileTypes)) {
             if (!is_dir($fileUploadPath) && $fileUploadPath) {
                 mkdir($fileUploadPath);

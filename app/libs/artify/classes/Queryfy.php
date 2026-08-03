@@ -162,9 +162,12 @@ class Queryfy
      */
     private function connectMysql()
     {
-
         try {
-            $this->dbObj = new PDO("mysql:host=$this->dbHostName;dbname=$this->dbName", $this->dbUserName, $this->dbPassword);
+            $opts = array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION);
+            if (getenv('DB_SSL_CA')) {
+                $opts[PDO::MYSQL_ATTR_SSL_CA] = getenv('DB_SSL_CA');
+            }
+            $this->dbObj = new PDO("mysql:host=$this->dbHostName;dbname=$this->dbName", $this->dbUserName, $this->dbPassword, $opts);
             $this->connectionStatus = 1;
         } catch (PDOException $e) {
             $this->setErrors($e->getMessage());
