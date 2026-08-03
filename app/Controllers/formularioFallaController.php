@@ -39,6 +39,7 @@ class formularioFallaController {
                                     <label class="control-label col-md-3 col-form-label">Nombre:</label>
                                     <div class="col-md-9">
                                         {nombre}
+                                        <span><strong>Campo Obligatorio</strong></span>
                                         <p class="pdocrud_help_block help-block form-text with-errors"></p>
                                     </div>
                                 </div>
@@ -46,6 +47,7 @@ class formularioFallaController {
                                     <label class="control-label col-md-3 col-form-label">Correo:</label>
                                     <div class="col-md-9">
                                         {correo}
+                                        <span><strong>Campo Obligatorio</strong></span>
                                         <p class="pdocrud_help_block help-block form-text with-errors"></p>
                                     </div>
                                 </div>
@@ -54,13 +56,14 @@ class formularioFallaController {
                         <div class="col-md-12">
                             <div class="form-section">
                                 <h6>
-                                    <i class="fas fa-building"></i>
+                                    <i class="fa fa-building"></i>
                                     Ubicación
                                 </h6>
                                 <div class="form-group row">
                                     <label class="control-label col-md-3 col-form-label">Área:</label>
                                     <div class="col-md-9">
                                         {area}
+                                        <span><strong>Campo Obligatorio</strong></span>
                                         <p class="pdocrud_help_block help-block form-text with-errors"></p>
                                     </div>
                                 </div>
@@ -68,6 +71,7 @@ class formularioFallaController {
                                     <label class="control-label col-md-3 col-form-label">Sector:</label>
                                     <div class="col-md-9">
                                         {sector_funcionario}
+                                        <span><strong>Campo Obligatorio</strong></span>
                                         <p class="pdocrud_help_block help-block form-text with-errors"></p>
                                     </div>
                                 </div>
@@ -90,13 +94,14 @@ class formularioFallaController {
                             <label class="control-label col-md-3 col-form-label">Ubicación:</label>
                             <div class="col-md-9">
                                 {ubicacion}
+                                <span><strong>Campo Obligatorio</strong></span>
                                 <p class="pdocrud_help_block help-block form-text with-errors"></p>
                             </div>
                         </div>
                     </div>
                     <div class="form-section">
                         <h6>
-                            <i class="fas fa-camera"></i>
+                            <i class="fa fa-camera"></i>
                             Evidencia
                         </h6>
                         <div class="form-group row">
