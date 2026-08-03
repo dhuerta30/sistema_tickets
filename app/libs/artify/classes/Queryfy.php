@@ -297,36 +297,27 @@ class Queryfy
 
     public function send_email_public($to, $from, $file = null, $subject = null, $message = '', $html = true)
     {
-        //self::sendMail($subject, $to, $message, "sales@xcrud.com", $file);
-
         require_once(dirname(__FILE__) . "/library/mailer/src/Exception.php");
         require_once(dirname(__FILE__) . "/library/mailer/src/PHPMailer.php");
         require_once(dirname(__FILE__) . "/library/mailer/src/SMTP.php");
 
-        define("HOST", PDOModel::$mail_host);
-        define("PORT", PDOModel::$mail_port);
-        define("SMTPAUTH", PDOModel::$smtp_auth);
-        define("USERNAME", PDOModel::$username);
-        define("PASSWORD", PDOModel::$password);
-        define("SMTPSECURE", PDOModel::$smtpsecure);
-
         $mail = new PHPMailer(true);
         //Server settings
-        $mail->isSMTP();                                            //Send using SMTP
-        $mail->Host       = "smtp.gmail.com";                     //Set the SMTP server to send through
-        $mail->SMTPAuth   = true;                                //Enable SMTP authentication
-        $mail->Username   = "daniel.telematico@gmail.com";                    //SMTP username
-        $mail->Password   = "zdkbgrxsnjmyyzrj";                            //SMTP password
-        $mail->SMTPSecure = "tls";            //Enable implicit TLS encryption
-        $mail->Port       = 587;                                  //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-        $mail->CharSet = 'UTF-8';
+        $mail->isSMTP();
+        $mail->Host       = getenv('SMTP_HOST') ?: 'smtp.gmail.com';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = getenv('SMTP_USER');
+        $mail->Password   = getenv('SMTP_PASS');
+        $mail->SMTPSecure = getenv('SMTP_SECURE') ?: 'tls';
+        $mail->Port       = (int)(getenv('SMTP_PORT') ?: 587);
+        $mail->CharSet    = 'UTF-8';
         //Recipients
         $mail->setFrom($from, 'Procedimiento');
         $mail->addAddress($to, "");
         //$mail->addAttachment($file, $file);
 
         //Content
-        $mail->isHTML(true);                                  //Set email format to HTML
+        $mail->isHTML(true);
         $mail->Subject = $subject;
         $mail->Body    = $message;
 
