@@ -1,0 +1,9 @@
+[09-Jul-2026 19:40:00 UTC] PHP Warning:  Undefined array key "usuario" in /home/hospitaldem/public_html/sistema_tickets/app/core/cache/4478e7d1813936c227a256f8ae72001c.php on line 24
+[09-Jul-2026 19:40:00 UTC] PHP Warning:  Trying to access array offset on null in /home/hospitaldem/public_html/sistema_tickets/app/core/cache/4478e7d1813936c227a256f8ae72001c.php on line 24
+[09-Jul-2026 19:40:00 UTC] PHP Warning:  Trying to access array offset on null in /home/hospitaldem/public_html/sistema_tickets/app/core/cache/4478e7d1813936c227a256f8ae72001c.php on line 24
+[09-Jul-2026 20:41:58 UTC] PHP Warning:  Undefined array key "usuario" in /home/hospitaldem/public_html/sistema_tickets/app/core/cache/4478e7d1813936c227a256f8ae72001c.php on line 24
+[09-Jul-2026 20:41:58 UTC] PHP Warning:  Trying to access array offset on null in /home/hospitaldem/public_html/sistema_tickets/app/core/cache/4478e7d1813936c227a256f8ae72001c.php on line 24
+[09-Jul-2026 20:41:58 UTC] PHP Warning:  Trying to access array offset on null in /home/hospitaldem/public_html/sistema_tickets/app/core/cache/4478e7d1813936c227a256f8ae72001c.php on line 24
+[22-Jul-2026 13:55:46 UTC] PHP Warning:  Undefined array key "usuario" in /home/hospitaldem/public_html/sistema_tickets/app/core/cache/4478e7d1813936c227a256f8ae72001c.php on line 24
+[22-Jul-2026 13:55:46 UTC] PHP Warning:  Trying to access array offset on null in /home/hospitaldem/public_html/sistema_tickets/app/core/cache/4478e7d1813936c227a256f8ae72001c.php on line 24
+[22-Jul-2026 13:55:46 UTC] PHP Warning:  Trying to access array offset on null in /home/hospitaldem/public_html/sistema_tickets/app/core/cache/4478e7d1813936c227a256f8ae72001c.php on line 24

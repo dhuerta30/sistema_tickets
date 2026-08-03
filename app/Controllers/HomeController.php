@@ -142,20 +142,25 @@ class HomeController
 		$request = new Request();
 	
 		if ($request->getMethod() === 'POST') {
+			// Obtén la URL actual
 			$currentUrl = $_SERVER['REQUEST_URI'];
 			$id_sesion_usuario = $_SESSION["usuario"][0]["id"];
 
+			// Obtén el menú y submenús utilizando funciones existentes
 			$menu = HomeController::obtener_menu_por_id_usuario($id_sesion_usuario);
+
+			// Estructura para almacenar el menú
 			$menuHtml = '<nav class="mt-2">
 							<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">';
 
 			foreach ($menu as $item) {
 				if ($_SESSION["usuario"][0]["idrol"] == 1 || $item["nombre_menu"] != "usuarios" && $item["visibilidad_menu"] != "Ocultar") {
-					
+					// Obtiene submenús
 					$submenus = HomeController::Obtener_submenu_por_id_menu($item['id_menu'], $id_sesion_usuario);
 					$tieneSubmenus = ($item["submenu"] == "Si");
 					$subMenuAbierto = false;
 
+					// Verifica si algún submenú está activo
 					foreach ($submenus as $submenu) {
 						if (strpos($currentUrl, $submenu['url_submenu']) !== false) {
 							$subMenuAbierto = true;
@@ -199,6 +204,7 @@ class HomeController
 			$menuHtml .= '</ul>
 						</nav>';
 
+			// Retorna el HTML del menú
 			echo json_encode([$menuHtml]);
 		}
 	}
@@ -224,6 +230,7 @@ class HomeController
 					$submenuIds = isset($menu["submenuIds"]) ? $menu["submenuIds"] : [];
 					$checked = $menu["checked"];
 
+					// Procesar el menú principal
 					$existMenu = $queryfy->where('id_menu', $menuId)
 						->where('id_usuario', $userId)
 						->select('usuario_menu');
@@ -253,6 +260,7 @@ class HomeController
 							break;
 					}
 
+					// Procesar los submenús asociados al menú principal
 					foreach ($submenuIds as $submenuId) {
 						$id_submenu = $submenuId['id'];
 						$checked = $submenuId["checked"];
@@ -336,14 +344,9 @@ class HomeController
 		$artify->setSettings("checkboxCol", false);
 		$render = $artify->dbTable("usuario")->render();
 
-		$menu = HomeController::menuDB();
-		$current_url = $_SERVER['REQUEST_URI'];
-
 		$stencil = new ArtifyStencil();
-		echo $stencil->render('acceso_menus', [
-			'render' => $render,
-			'menu'   => $menu,
-			'current_url' => $current_url
+        echo $stencil->render('acceso_menus', [
+			'render' => $render
 		]);
 	}
 
@@ -749,7 +752,7 @@ class HomeController
 		$artify = DB::ArtifyCrud();
 		$queryfy = $artify->getQueryfyObj();
 		$queryfy->where("id_menu", $idMenu, "=");
-		$queryfy->orderBy(array("orden_submenu asc"));
+		$queryfy->orderBy(array("orden_submenu asc")); // Ajusta el nombre de la columna de ordenación si es diferente
 		$data = $queryfy->select("submenu");
 		return $data;
 	}	
@@ -3244,21 +3247,28 @@ class HomeController
 		$id_usuario_session = $_SESSION["usuario"][0]["id"];
 		
 		$queryfy = $obj->getQueryfyObj();
+
+		// Eliminar de usuario_menu
 		$queryfy->where("id_menu", $id_menu);
 		$queryfy->where("id_usuario", $id_usuario_session);
 		$queryfy->delete("usuario_menu");
 
+		// Buscar el id_submenu relacionado al id_menu
 		$queryfy->where("id_menu", $id_menu);
 		$id_menu_db = $queryfy->select("submenu");
 
+		// Verificar si se encontró el id_submenu
 		if (!empty($id_menu_db)) {
+			// Eliminar el submenu relacionado
 			$queryfy->where("id_submenu", $id_menu_db[0]["id_submenu"]);
 			$queryfy->delete("submenu");
 
+			// Eliminar de usuario_submenu relacionado
 			$queryfy->where("id_menu", $id_menu);
 			$queryfy->where("id_usuario", $id_usuario_session);
 			$queryfy->delete("usuario_submenu");
 		} else {
+			// Si no hay submenus, actualizar el campo "submenu" en la tabla menu
 			$queryfy->where("id_menu", $id_menu);
 			$queryfy->update("menu", array("submenu" => "No"));
 		}
