@@ -17,6 +17,12 @@
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="col-md-12">
+                        {!! $render_area !!}
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>

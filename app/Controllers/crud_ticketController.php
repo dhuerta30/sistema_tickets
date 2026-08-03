@@ -263,9 +263,14 @@ class crud_ticketController {
         $artify->relatedData('id_area','area','id_area','nombre');
         $render = $artify->dbTable("fallas")->render();
 
+
+        $area = DB::ArtifyCrud();
+        $render_area = $area->dbTable("area")->render();
+
         $stencil = new ArtifyStencil();
         echo $stencil->render('asignacion', [
-            'render' => $render
+            'render' => $render,
+            'render_area' => $render_area
         ]);
     }
 
