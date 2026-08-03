@@ -114,8 +114,7 @@ class formularioFallaController {
                     </div>
                 </div>
             </div>
-        </div>
-        ';
+        </div>';
         $artify->set_template($html_template);
         $artify->addPlugin("select2");
         $artify->addCallback("before_insert", [$this, "capturar_foto"]);
