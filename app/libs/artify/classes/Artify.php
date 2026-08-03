@@ -3458,11 +3458,13 @@ Class Artify {
     private function addLimitOrderBy(Queryfy $queryfy, $data = array(), $recordPerPage = 10) {
         $queryfy->limit = $this->getSelectPageLimit($recordPerPage);
         if (isset($data["sortkey"])) {
-            $fieldName = $this->decrypt($data["sortkey"]);
-            $this->sortOrder[$fieldName] = $data["action"];
-            $queryfy->orderByCols = array(
-                $fieldName . " " . $data["action"]
-            );
+            $fieldName = $this->validateColumnName($this->decrypt($data["sortkey"]), $queryfy);
+            if ($fieldName !== null) {
+                $this->sortOrder[$fieldName] = $data["action"];
+                $queryfy->orderByCols = array(
+                    $fieldName . " " . $this->validateSortDir($data["action"])
+                );
+            }
         } else if (isset($this->orderByCols)) {
             $queryfy->orderByCols = array(
                 $this->orderByCols
