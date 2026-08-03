@@ -38,7 +38,7 @@ class LoginController {
 			<div class="hospital-login-card">
 				<div class="hospital-header">
 					<div class="hospital-icon">
-						<img width="50" src="'.$_ENV["BASE_URL"]."app/libs/artify/uploads/".$configuracion[0]["logo_login"].'">
+						<img width="40" src="'.$_ENV["BASE_URL"]."app/libs/artify/uploads/".$configuracion[0]["logo_login"].'">
 					</div>
 					<h3>Mesa de Ayuda</h3>
 					<p>Sistema de Tickets Hospitalario</p>

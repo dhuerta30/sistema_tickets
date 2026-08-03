@@ -46,10 +46,11 @@ body {
     display:flex;
     align-items:center;
     justify-content:center;
-    background:#0d6efd;
+    background:#fff;
     color:white;
     border-radius:50%;
     font-size:32px;
+    border: 1px solid #d1caca;
 }
 .hospital-header h3 {
     margin-top:15px;
