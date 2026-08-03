@@ -87,6 +87,7 @@ class formularioFallaController {
                             <label class="control-label col-md-3 col-form-label">Fallas:</label>
                             <div class="col-md-9">
                                 {fallas}
+                                <span><strong>Campo Obligatorio</strong></span>
                                 <p class="pdocrud_help_block help-block form-text with-errors"></p>
                             </div>
                         </div>
