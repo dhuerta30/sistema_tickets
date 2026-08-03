@@ -7,6 +7,9 @@ require __DIR__ . '/app/libs/docufy/docufy.php';
 
 use App\core\ArtifyRouter;
 use App\core\Request;
+use App\core\Security;
+
+Security::boot();
 
 $router = new ArtifyRouter();
 
