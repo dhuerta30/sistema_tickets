@@ -6,7 +6,7 @@ return [
         'driver' => 'mysql',
         'host' => 'localhost',
         'port' => 3306,
-        'dbname' => 'artigrid',
+        'dbname' => 'sistema_tickets',
         'user' => 'root',
         'password' => '',
         'charset' => 'utf8'
