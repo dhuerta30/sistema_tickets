@@ -1,21 +1,50 @@
 <?php
 
+#[\AllowDynamicProperties]
 Class ArtifyAjaxCtrl {
+    private function sanitizeString($value) {
+        if ($value === null) {
+            return null;
+        }
+        $value = strip_tags((string) $value);
+        return str_replace(array("'", '"'), array('&#39;', '&#34;'), $value);
+    }
+
+    private function sanitizeArray($data) {
+        if (!is_array($data)) {
+            return $this->sanitizeString($data);
+        }
+        $clean = array();
+        foreach ($data as $key => $val) {
+            $clean[$key] = is_array($val) ? $this->sanitizeArray($val) : $this->sanitizeString($val);
+        }
+        return $clean;
+    }
 
     public function handleRequest() {
-        $instanceKey = isset($_REQUEST["artify_instance"]) ? strip_tags(trim($_REQUEST["artify_instance"])) : null;
+        $instanceKey = null;
+
+        if (isset($_POST["artify_instance"])) {
+            $instanceKey = $this->sanitizeString($_POST["artify_instance"]);
+        } elseif (isset($_GET["artify_instance"])) {
+            $instanceKey = $this->sanitizeString($_GET["artify_instance"]);
+        }
         
         if(!isset($_SESSION["artify_sess"][$instanceKey])){
             die("La sesión ha caducado. Actualice su página para continuar.");
         }
 
-        $artify = @unserialize($_SESSION["artify_sess"][$instanceKey]);
-        if ($artify === false) {
-            die("Ocurrió un error. Por favor, inténtelo de nuevo más tarde.");
+        $artify = @unserialize(
+            $_SESSION["artify_sess"][$instanceKey],
+            ['allowed_classes' => true]
+        );
+
+        if (!is_object($artify)) {
+            exit("Ocurrió un error. Por favor, inténtelo de nuevo más tarde.");
         }
 
-        $action = isset($_POST["artify_data"]["action"]) ? strip_tags(trim($_POST["artify_data"]["action"])) : null;
-        $data = isset($_POST["artify_data"]) ? array_map('strip_tags', $_POST["artify_data"]) : [];
+        $action = isset($_POST["artify_data"]["action"]) ? $this->sanitizeString($_POST["artify_data"]["action"]) : null;
+        $data = isset($_POST["artify_data"]) ? $this->sanitizeArray($_POST["artify_data"]) : [];
         $post = $_POST;
         if (isset($_FILES)) {
             $post = array_merge($_FILES, $post);
@@ -141,7 +170,7 @@ Class ArtifyAjaxCtrl {
                 break;
             case "AUTOSUGGEST":
                 if (isset($_GET["callback"])) {
-                    $data["callback"] = filter_var($_GET["callback"], FILTER_SANITIZE_STRING);
+                    $data["callback"] = $this->sanitizeString($_GET["callback"]);
                 }
                 echo $artify->render("AUTOSUGGEST", $data);
                 break;
