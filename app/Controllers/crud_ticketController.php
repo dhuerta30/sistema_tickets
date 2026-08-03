@@ -237,19 +237,14 @@ class crud_ticketController {
         $artify->setSettings("searchbox", true);
         $artify->setSettings("editbtn", true);
         $artify->setSettings("delbtn", true);
-
         $artify->buttonHide("submitBtnSaveBack");
-
         $artify->fieldRenameLable("nombre_fa", "Nombre de la Falla");
         $artify->fieldRenameLable("id_area", "Área");
-
         $artify->colRename("id_falla", "ID");
         $artify->colRename("nombre_fa", "Nombre de la Falla");
         $artify->colRename("id_area", "Área");
-
         $artify->relatedData('id_area','area','id_area','nombre');
         $render = $artify->dbTable("fallas")->render();
-
 
         $area = DB::ArtifyCrud();
         $area->formDisplayInPopup();
