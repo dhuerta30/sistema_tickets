@@ -13,8 +13,121 @@ class formularioFallaController {
     {
         date_default_timezone_set("America/Santiago");
         $fecha = date("Y-m-d");
-
         $artify = DB::ArtifyCrud();
+
+        $html_template = '
+        <div class="ticket-wrapper">
+            <div class="ticket-card">
+
+                <div class="ticket-header">
+                    <div class="ticket-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3>Generar Ticket</h3>
+                    <p>Mesa de Ayuda TI Hospitalaria</p>
+                </div>
+
+                <div class="ticket-body">
+
+                    <!-- Campos ocultos -->
+                    {fecha}
+                    {estado}
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-section">
+                                <h6>
+                                    <i class="fas fa-user"></i>
+                                    Datos del Funcionario
+                                </h6>
+
+                                <div class="form-group row">
+                                    <label class="control-label col-md-3 col-form-label">Nombre:</label>
+                                    <div class="col-md-9">
+                                        {nombre}
+                                        <p class="pdocrud_help_block help-block form-text with-errors"></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="control-label col-md-3 col-form-label">Correo:</label>
+                                    <div class="col-md-9">
+                                        {correo}
+                                        <p class="pdocrud_help_block help-block form-text with-errors"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-section">
+                                <h6>
+                                    <i class="fas fa-building"></i>
+                                    Ubicación
+                                </h6>
+
+                                <div class="form-group row">
+                                    <label class="control-label col-md-3 col-form-label">Área:</label>
+                                    <div class="col-md-9">
+                                        {area}
+                                        <p class="pdocrud_help_block help-block form-text with-errors"></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="control-label col-md-3 col-form-label">Sector:</label>
+                                    <div class="col-md-9">
+                                        {sector_funcionario}
+                                        <p class="pdocrud_help_block help-block form-text with-errors"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h6>
+                            <i class="fas fa-tools"></i>
+                            Información del requerimiento
+                        </h6>
+
+                        <div class="form-group row">
+                            <label class="control-label col-md-3 col-form-label">Fallas:</label>
+                            <div class="col-md-9">
+                                {fallas}
+                                <p class="pdocrud_help_block help-block form-text with-errors"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="control-label col-md-3 col-form-label">Ubicación:</label>
+                            <div class="col-md-9">
+                                {ubicacion}
+                                <p class="pdocrud_help_block help-block form-text with-errors"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h6>
+                            <i class="fas fa-camera"></i>
+                            Evidencia
+                        </h6>
+
+                        <div class="form-group row">
+                            <label class="control-label col-md-3 col-form-label">Foto:</label>
+                            <div class="col-md-9">
+                                {foto}
+                                <p class="pdocrud_help_block help-block form-text with-errors"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        ';
+        $artify->set_template($html_template);
         $artify->addPlugin("select2");
         $artify->addCallback("before_insert", [$this, "capturar_foto"]);
         $artify->addCallback("after_insert", [$this, "insertar_ticket"]);
@@ -31,13 +144,6 @@ class formularioFallaController {
         $artify->fieldDataAttr("fecha", array("style"=>"display:none"));
         $artify->fieldTypes("ubicacion", "textarea");
     
-        /*$artify->formStaticFields("camera", "html", "
-            <div style='text-align:center;'>
-                <input type='file' name='foto' accept='image/*' capture='camera'>
-                <p><strong>Campo Opcional</strong></p>
-            </div>
-        ");*/
-
         $artify->buttonHide("cancel");
         $artify->setLangData("save",'Generar Ticket');
 
@@ -89,24 +195,14 @@ class formularioFallaController {
 
     public function capturar_foto($data, $obj){
         if (!empty($data["tickets"]["foto"])) {
-
-            // Extensiones permitidas
             $extPermitidas = ["png", "PNG", "jpg", "jpeg", "webp", "svg"];
-
-            // separar fotos por coma
             $fotos = explode(",", $data["tickets"]["foto"]);
             $soloNombres = [];
-
             foreach ($fotos as $foto) {
                 $foto = trim($foto);
                 if ($foto === "") continue;
-
                 $nombre = basename($foto);
-
-                // obtener extensión del archivo
                 $ext = pathinfo($nombre, PATHINFO_EXTENSION);
-
-                // validar extensión
                 if (!in_array($ext, $extPermitidas)) {
                     $error_msg = array(
                         "message" => "",
@@ -115,45 +211,30 @@ class formularioFallaController {
                     );
                     die(json_encode($error_msg));
                 }
-
                 $soloNombres[] = $nombre;
             }
-
-            // unir nuevamente como "foto1,foto2,foto3"
             $data["tickets"]["foto"] = implode(",", $soloNombres);
         }
-
         return $data;
     }
 
     public function insertar_ticket($data, $obj){
         $id = $data;
         $queryfy = $obj->getQueryfyObj();
-
-        // Obtener datos del ticket
         $queryfy->where("id_tickets", $id);
         $result = $queryfy->select("tickets");
         $correo = $result[0]["correo"];
         $area = $result[0]["area"];
         $fallas = $result[0]["fallas"];
-
-        // Obtener nombre de área y falla
         $queryfy->where("id_area", $area);
         $dbAreas = $queryfy->select("area");
         $nombreArea = substr($dbAreas[0]["nombre"], 0, 4);
-
         $queryfy->where("id_falla", $fallas);
         $dbFallas = $queryfy->select("fallas");
         $nombreFalla = substr($dbFallas[0]["nombre_fa"], 0, 4);
-
-        // Construir prefijo del ticket
         $prefijoTicket = $nombreArea . $nombreFalla;
-
-        // Buscar tickets existentes que comiencen con este prefijo
         $queryfy->where("n_ticket", '%'. $prefijoTicket . '%', "LIKE");
         $ticketsExistentes = $queryfy->select("tickets");
-
-        // Determinar siguiente número
         $siguienteNumero = 1;
         if(!empty($ticketsExistentes)){
             $numeros = [];
@@ -168,20 +249,13 @@ class formularioFallaController {
             }
         }
         $numeroTicketFormateado = str_pad($siguienteNumero, 2, '0', STR_PAD_LEFT);
-
         $n_ticket_final = $prefijoTicket . $numeroTicketFormateado;
-
-        // Actualizar ticket
         $queryfy->where("correo", $correo);
         $queryfy->update("tickets", array("n_ticket" => $n_ticket_final));
-
-        // Enviar correo
         $emailBody = "Se ha generado el Ticket con número $n_ticket_final satisfactoriamente, a la brevedad un técnico tomará su solicitud";
         $subject = "Ticket Generado";
         $to = $correo;
-
         DB::PHPMail($to, $correo, $subject, $emailBody);
-
         $obj->setLangData("success", "Se ha generado el Ticket con número $n_ticket_final satisfactoriamente, a la brevedad un técnico tomará su solicitud");
         return $data;
     }
