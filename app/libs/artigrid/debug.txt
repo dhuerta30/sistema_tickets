@@ -1,0 +1,10 @@
+Array
+(
+    [action] => inline_update
+    [table] => products
+    [id] => 1
+    [field] => productCode
+    [value] => S10_1678
+    [grid_id] => products
+    [csrf_token] => 7c9673327cc769b92ed148bf4a263b7af917cc35d3545ffa56b4512126b1b686
+)

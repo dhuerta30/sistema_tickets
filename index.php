@@ -47,15 +47,11 @@ $router->post('/cargar_vista_submenu', 'HomeController@cargar_vista_submenu');
 $router->post('/actualizar_tickets_por_fila', 'crud_ticketController@actualizar_tickets_por_fila');
 $router->post('/completar_tickets', 'crud_ticketController@completar_tickets');
 $router->post('/asignar', 'crud_ticketController@asignar');
-
 $router->get('/tickets_completados', 'crud_ticketController@tickets_completados');
-
 $router->get('/Configuracion', 'ConfiguracionController@index');
 $router->get('/url', 'nombre_tablaController@index');
-
 $router->get('/documentacion', 'DocumentacionController@documentacion');
 $router->get('/error', 'ErrorController@index');
-
 $router->get('/hola', 'UserController@index');
 $router->get('usuario/{id}/{val}/{val}', 'UserController@show');
 $router->get('/crud_ticket', 'crud_ticketController@index');
@@ -65,10 +61,8 @@ $router->get('/sector', 'SectorController@index');
 
 /* Api Controllers */
 $router->post('/Restp/generarToken', 'RestpController@generarToken');
-
 $router->get('/Restp/listar/{tabla}/{token}', 'RestpController@listar');
 $router->get('/Restp/listar/{tabla}/{filtro_url}/{token}', 'RestpController@listar');
-
 $router->post('/Restp/insertar', 'RestpController@insertar');
 $router->post('/Restp/actualizar', 'RestpController@actualizar');
 $router->post('/Restp/eliminar', 'RestpController@eliminar');

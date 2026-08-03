@@ -38,14 +38,11 @@ class LoginController {
 			<div class="hospital-login-card">
 				<div class="hospital-header">
 					<div class="hospital-icon">
-						<i class="fas fa-hospital"></i>
+						<img width="50" src="'.$_ENV["BASE_URL"]."app/libs/artify/uploads/".$configuracion[0]["logo_login"].'">
 					</div>
 					<h3>Mesa de Ayuda</h3>
 					<p>Sistema de Tickets Hospitalario</p>
 				</div>
-				<!--<div class="hospital-logo">
-					<img src="'.$_ENV["BASE_URL"]."app/libs/artify/uploads/".$configuracion[0]["logo_login"].'">
-				</div>-->
 				<div class="form-data">
 					<div class="form-group usuario_col">
 						<label>

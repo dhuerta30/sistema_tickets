@@ -1,0 +1,238 @@
+/* ============================
+   🌌 ArtiGrid – Futuristic UI
+   ============================ */
+
+.artigrid-container {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    overflow: hidden;
+    transition: all .25s ease;
+}
+
+.fc-event-delete {
+    opacity: 0;
+    transition: opacity .15s;
+    background: rgba(0,0,0,.25);
+    color: #fff;
+}
+.fc-event:hover .fc-event-delete {
+    opacity: 1;   /* aparece solo al pasar el mouse por encima */
+}
+.fc-event-delete:hover {
+    background: #dc3545;   /* rojo al pasar sobre la × */
+}
+
+body > .modal + .modal {
+    z-index: 1090 !important;
+}
+body > .modal-backdrop + .modal-backdrop {
+    z-index: 1080 !important;
+}
+
+a {
+    text-decoration: none;
+}
+
+.artigrid-container:hover {
+    box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+/* ============================
+   🔍 Search
+   ============================ */
+
+.artigrid-search {
+    background: rgba(255, 255, 255, 0.65);
+    border: 1px solid rgb(0 0 0 / 30%);
+    padding-left: 1rem;
+    transition: all .2s ease;
+}
+
+.artigrid-search:focus {
+    background: #fff;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 .15rem rgba(99, 102, 241, 0.25);
+}
+
+/* ============================
+   📊 Table
+   ============================ */
+
+.artigrid-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: #ffffff;
+}
+
+.artigrid-table thead th {
+    background: linear-gradient(
+        180deg,
+        rgba(99, 102, 241, 0.08),
+        rgba(99, 102, 241, 0.02)
+    );
+    font-weight: 600;
+    font-size: .8rem;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: #4f46e5;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.artigrid-table tbody tr {
+    transition: background .15s ease, transform .15s ease;
+}
+
+.artigrid-table tbody tr:hover {
+    background: rgba(99, 102, 241, 0.04);
+    transform: translateY(-1px);
+}
+
+.artigrid-table td {
+    font-size: .85rem;
+    color: #1f2937;
+    border-top: 1px solid rgba(0, 0, 0, 0.04);
+    white-space: nowrap;
+}
+
+/* ============================
+   🧩 Action buttons
+   ============================ */
+
+.artigrid-table .btn {
+    padding: .25rem .55rem;
+    border-radius: .5rem;
+    font-size: .75rem;
+    transition: all .15s ease;
+    margin: 2px;
+}
+
+/* ============================
+   🔘 Pagination
+   ============================ */
+
+.artigrid-pagination .page-link {
+    border: none;
+    margin: 0 .15rem;
+    border-radius: .5rem;
+    font-size: .75rem;
+    color: #4f46e5;
+    background: rgba(99, 102, 241, 0.08);
+    transition: all .15s ease;
+}
+
+.artigrid-pagination .page-link:hover {
+    background: rgba(99, 102, 241, 0.2);
+}
+
+.artigrid-pagination .page-item.active .page-link {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: #fff;
+    box-shadow: 0 6px 15px rgba(99, 102, 241, 0.45);
+}
+
+/* ============================
+   ⏳ Spinner Overlay Fullscreen
+   ============================ */
+
+.artigrid-spinner-overlay {
+    position: fixed;
+    inset: 0; /* reemplaza top/left/width/height */
+    background: rgba(31, 41, 55, 0.4);
+    z-index: 9999;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+}
+
+.artigrid-spinner {
+    width: 80px;
+    height: 80px;
+
+    background: url('../img/loading.png') center / contain no-repeat;
+
+    filter: drop-shadow(0 0px 6px rgba(0, 0, 0, 0.3));
+}
+
+.form-control-sm {
+    max-width: 100%;
+    min-width: 200px;
+}
+
+.artigrid-table .artigrid-row:hover td.artigrid-buttons-actions {
+    position: sticky;
+    right: 0;
+}
+
+
+.dropdown-custom {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu-custom {
+    display: none;
+    position: relative;
+    right: 0;
+    top: 100%;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 0.25rem 0;
+    list-style: none;
+    min-width: 120px;
+    z-index: 999;
+}
+
+.dropdown-menu-custom.show {
+    display: block;
+}
+
+.dropdown-menu-custom li button {
+    width: 100%;
+    padding: 0.25rem 0.75rem;
+    text-align: left;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.dropdown-menu-custom li button:hover {
+    background: #f0f0f0;
+}
+
+.artigrid-table tbody tr[style] > td {
+    background: #fff !important;
+}
+
+@media (max-width: 768px) {
+    button.btn.btn-primary.artigrid-add-btn {
+        width: 100%;
+    }
+
+    .artigrid-container .dropdown-menu {
+        width: 100%;
+    }
+
+    .artigrid-container .table {
+        font-size: 13px;
+    }
+
+    .artigrid-container th,
+    .artigrid-container td {
+        white-space: nowrap;
+    }
+}
+
+.artigrid-summary-row td { border-top: 2px solid #dee2e6; padding: 8px; font-size: 0.85rem; }
+.artigrid-summary-row .summary-label { color: #495057; }
+.artigrid-summary-row .summary-op { display: inline-block; white-space: nowrap; }

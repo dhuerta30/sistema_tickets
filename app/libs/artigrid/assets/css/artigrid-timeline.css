@@ -1,0 +1,111 @@
+.artigrid-timeline {
+    position: relative;
+    padding: 20px 0;
+}
+.artigrid-timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 20px;
+    width: 3px;
+    background: linear-gradient(to bottom, #0d6efd, #6ea8fe);
+    border-radius: 3px;
+}
+.artigrid-tl-item {
+    position: relative;
+    padding-left: 56px;
+    margin-bottom: 26px;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity .4s ease, transform .4s ease;
+}
+.artigrid-tl-item.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+.artigrid-tl-dot {
+    position: absolute;
+    left: 9px;
+    top: 4px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #0d6efd;
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 2px #0d6efd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 12px;
+    z-index: 2;
+}
+.artigrid-tl-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 12px 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+    transition: box-shadow .2s ease, transform .2s ease;
+}
+.artigrid-tl-card:hover {
+    box-shadow: 0 4px 14px rgba(0,0,0,.12);
+    transform: translateY(-2px);
+}
+.artigrid-tl-date {
+    font-size: 12px;
+    font-weight: 600;
+    color: #0d6efd;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+}
+.artigrid-tl-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 4px;
+}
+.artigrid-tl-content {
+    font-size: 13px;
+    color: #4b5563;
+    line-height: 1.5;
+}
+.artigrid-tl-actions {
+    margin-top: 8px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+/* Alternado */
+@media (min-width: 768px) {
+    .artigrid-timeline-align-alternate::before { left: 50%; transform: translateX(-50%); }
+    .artigrid-timeline-align-alternate .artigrid-tl-item {
+        width: 50%;
+        padding-left: 0;
+        padding-right: 40px;
+    }
+    .artigrid-timeline-align-alternate .artigrid-tl-item .artigrid-tl-dot {
+        left: auto; right: -13px;
+    }
+    .artigrid-timeline-align-alternate .artigrid-tl-item.tl-right {
+        margin-left: 50%;
+        padding-left: 40px;
+        padding-right: 0;
+    }
+    .artigrid-timeline-align-alternate .artigrid-tl-item.tl-right .artigrid-tl-dot {
+        left: -13px; right: auto;
+    }
+
+    /* Derecha */
+    .artigrid-timeline-align-right::before { left: auto; right: 20px; }
+    .artigrid-timeline-align-right .artigrid-tl-item {
+        padding-left: 0; padding-right: 56px; text-align: right;
+    }
+    .artigrid-timeline-align-right .artigrid-tl-dot { left: auto; right: 9px; }
+    .artigrid-timeline-align-right .artigrid-tl-actions { justify-content: flex-end; }
+}
+
+.artigrid-tl-empty { text-align: center; color: #9ca3af; padding: 30px; }
