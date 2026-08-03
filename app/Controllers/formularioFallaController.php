@@ -14,13 +14,14 @@ class formularioFallaController {
         date_default_timezone_set("America/Santiago");
         $fecha = date("Y-m-d");
         $artify = DB::ArtifyCrud();
+        $configuracion = HomeController::configuracion();
 
         $html_template = '
         <div class="ticket-wrapper">
             <div class="ticket-card">
                 <div class="ticket-header">
                     <div class="ticket-icon">
-                        <i class="fas fa-headset"></i>
+                       <img width="50" src="'.$_ENV["BASE_URL"]."app/libs/artify/uploads/".$configuracion[0]["logo_login"].'">
                     </div>
                     <h3>Generar Ticket</h3>
                     <p>Mesa de Ayuda TI Hospitalaria</p>
