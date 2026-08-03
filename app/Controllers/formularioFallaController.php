@@ -18,7 +18,6 @@ class formularioFallaController {
         $html_template = '
         <div class="ticket-wrapper">
             <div class="ticket-card">
-
                 <div class="ticket-header">
                     <div class="ticket-icon">
                         <i class="fas fa-headset"></i>
@@ -26,21 +25,16 @@ class formularioFallaController {
                     <h3>Generar Ticket</h3>
                     <p>Mesa de Ayuda TI Hospitalaria</p>
                 </div>
-
                 <div class="ticket-body">
-
-                    <!-- Campos ocultos -->
                     {fecha}
                     {estado}
-
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-section">
                                 <h6>
                                     <i class="fas fa-user"></i>
                                     Datos del Funcionario
                                 </h6>
-
                                 <div class="form-group row">
                                     <label class="control-label col-md-3 col-form-label">Nombre:</label>
                                     <div class="col-md-9">
@@ -58,14 +52,12 @@ class formularioFallaController {
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-section">
                                 <h6>
                                     <i class="fas fa-building"></i>
                                     Ubicación
                                 </h6>
-
                                 <div class="form-group row">
                                     <label class="control-label col-md-3 col-form-label">Área:</label>
                                     <div class="col-md-9">
@@ -73,7 +65,6 @@ class formularioFallaController {
                                         <p class="pdocrud_help_block help-block form-text with-errors"></p>
                                     </div>
                                 </div>
-
                                 <div class="form-group row">
                                     <label class="control-label col-md-3 col-form-label">Sector:</label>
                                     <div class="col-md-9">
@@ -84,13 +75,11 @@ class formularioFallaController {
                             </div>
                         </div>
                     </div>
-
                     <div class="form-section">
                         <h6>
                             <i class="fas fa-tools"></i>
                             Información del requerimiento
                         </h6>
-
                         <div class="form-group row">
                             <label class="control-label col-md-3 col-form-label">Fallas:</label>
                             <div class="col-md-9">
@@ -98,7 +87,6 @@ class formularioFallaController {
                                 <p class="pdocrud_help_block help-block form-text with-errors"></p>
                             </div>
                         </div>
-
                         <div class="form-group row">
                             <label class="control-label col-md-3 col-form-label">Ubicación:</label>
                             <div class="col-md-9">
@@ -107,13 +95,11 @@ class formularioFallaController {
                             </div>
                         </div>
                     </div>
-
                     <div class="form-section">
                         <h6>
                             <i class="fas fa-camera"></i>
                             Evidencia
                         </h6>
-
                         <div class="form-group row">
                             <label class="control-label col-md-3 col-form-label">Foto:</label>
                             <div class="col-md-9">
@@ -122,7 +108,6 @@ class formularioFallaController {
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
