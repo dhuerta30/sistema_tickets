@@ -177,8 +177,6 @@ class crud_ticketController {
    public function formattableTickets($data, $obj){
         if($data){
             foreach($data as &$item){
-
-                // PRIORIDAD
                 if($item["prioridad"] == "Alta"){
                     $item["prioridad"] = "<div class='badge badge-danger'>Alta</div>";
                 } else if($item["prioridad"] == "Media"){
@@ -186,22 +184,13 @@ class crud_ticketController {
                 } else if($item["prioridad"] == "Baja"){
                     $item["prioridad"] = "<div class='badge badge-primary'>Baja</div>";
                 }
-
-                // FOTOS
                 if (!empty($item["foto"])) {
-
-                    // dividir fotos por coma
                     $fotos = explode(",", $item["foto"]);
                     $html = "";
-
                     foreach ($fotos as $foto) {
-
                         $foto = trim($foto);
                         if ($foto === "") continue;
-
-                        // si la ruta ya es completa, solo agregamos BASE_URL adelante
                         $fotoUrl = $_ENV["BASE_URL"] . "app/libs/artify/uploads/" . $foto;
-
                         $html .= '
                             <a href="' . $fotoUrl . '" data-fancybox="gallery-' . $item["id_tickets"] . '" data-caption="Foto">
                                 <img src="' . $fotoUrl . '" alt="Foto" width="120" 
@@ -209,9 +198,7 @@ class crud_ticketController {
                             </a>
                         ';
                     }
-
                     $item["foto"] = $html;
-
                 } else {
                     $item["foto"] = "<span class='badge badge-danger'>Sin Foto</span>";
                 }
@@ -265,6 +252,7 @@ class crud_ticketController {
 
 
         $area = DB::ArtifyCrud();
+        $area->formDisplayInPopup();
         $area->colRename("id_area", "ID");
         $area->addCallback("before_insert", [$this, "insertar_area"]);
         $area->setSettings("refresh", false);
@@ -274,6 +262,8 @@ class crud_ticketController {
         $area->setSettings("addbtn", true);
         $area->setSettings("delbtn", true);
         $area->setSettings("function_filter_and_search", true);
+        $area->buttonHide("submitBtnSaveBack");
+        $area->buttonHide("cancel");
         $render_area = $area->dbTable("area")->render();
 
         $stencil = new ArtifyStencil();
