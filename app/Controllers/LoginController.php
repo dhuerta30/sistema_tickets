@@ -43,9 +43,9 @@ class LoginController {
 					<h3>Mesa de Ayuda</h3>
 					<p>Sistema de Tickets Hospitalario</p>
 				</div>
-				<div class="hospital-logo">
+				<!--<div class="hospital-logo">
 					<img src="'.$_ENV["BASE_URL"]."app/libs/artify/uploads/".$configuracion[0]["logo_login"].'">
-				</div>
+				</div>-->
 				<div class="form-data">
 					<div class="form-group usuario_col">
 						<label>
