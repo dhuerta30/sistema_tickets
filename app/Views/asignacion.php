@@ -5,6 +5,91 @@
     .artify-button-save {
         display: none!important;
     }
+
+    .ticket-wrapper {
+    display:flex;
+    justify-content:center;
+    padding:40px 15px;
+}
+.ticket-card {
+    width:850px;
+    background:white;
+    border-radius:20px;
+    box-shadow:
+    0 10px 35px rgba(0,0,0,.15);
+    overflow:hidden;
+}
+.ticket-header {
+    background:
+    linear-gradient(
+        135deg,
+        #0288d1,
+        #01579b
+    );
+    color:white;
+    text-align:center;
+    padding:35px;
+}
+.ticket-icon {
+    width:75px;
+    height:75px;
+    background:white;
+    color:#0288d1;
+    border-radius:50%;
+    margin:auto;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:35px;
+}
+.ticket-header h3 {
+    margin-top:15px;
+    font-weight:700;
+}
+.ticket-header p {
+    opacity:.9;
+}
+.ticket-body {
+    padding:35px;
+}
+.form-section {
+    background:#f8f9fa;
+    border-radius:15px;
+    padding:20px;
+    margin-bottom:20px;
+    border-left:5px solid #0288d1;
+}
+.form-section h6 {
+  font-weight:700;
+  color:#37474f;
+  margin-bottom:20px;
+}
+.form-section h6 i {
+  color:#0288d1;
+  margin-right:8px;
+}
+.form-control {
+  border-radius:10px;
+  min-height:42px;
+}
+.select2-container {
+  width:100%!important;
+}
+.select2-selection {
+  border-radius:10px!important;
+  min-height:30px!important;
+}
+textarea.form-control {
+  min-height:120px;
+}
+.btn-primary {
+  border-radius:12px;
+  font-size:17px;
+  font-weight:600;
+}
+.btn-primary:hover {
+  transform:translateY(-1px);
+}
 </style>
 <div class="content-wrapper">
     <section class="content">

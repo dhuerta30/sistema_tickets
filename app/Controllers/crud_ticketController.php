@@ -207,7 +207,6 @@ class crud_ticketController {
         return $data;
     }
 
-
     public function asignar_tickets($data, $obj){
         if($_SESSION["usuario"][0]["idrol"] == 3){ 
             $nombreTecnico = $data["tickets"]["nombreTecnico"];
@@ -233,6 +232,55 @@ class crud_ticketController {
 
     public function asignacion(){
         $artify = DB::ArtifyCrud();
+        $html_template = '
+        <div class="ticket-wrapper">
+            <div class="ticket-card">
+                <div class="ticket-header">
+                    <h3>Agregar Falla</h3>
+                    <p>Mesa de Ayuda TI Hospitalaria</p>
+                </div>
+
+                <div class="ticket-body">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <div class="form-section">
+                                <h6>
+                                    <i class="fas fa-user"></i>
+                                    Datos del Funcionario
+                                </h6>
+
+                                <div class="form-group row">
+                                    <label class="control-label col-md-3 col-form-label">
+                                        Nombre:
+                                    </label>
+                                    <div class="col-md-9">
+                                        {nombre_fa}
+                                        <span><strong>Campo Obligatorio</strong></span>
+                                        <p class="pdocrud_help_block help-block form-text with-errors"></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="control-label col-md-3 col-form-label">
+                                        Área:
+                                    </label>
+                                    <div class="col-md-9">
+                                        {id_area}
+                                        <span><strong>Campo Obligatorio</strong></span>
+                                        <p class="pdocrud_help_block help-block form-text with-errors"></p>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>';
+        $artify->set_template($html_template);
         $artify->setSettings("function_filter_and_search", true);
         $artify->setSettings("searchbox", true);
         $artify->setSettings("editbtn", true);
@@ -247,7 +295,38 @@ class crud_ticketController {
         $render = $artify->dbTable("fallas")->render();
 
         $area = DB::ArtifyCrud();
-        $area->formDisplayInPopup();
+        $html_template_area = '
+        <div class="ticket-wrapper">
+            <div class="ticket-card">
+                <div class="ticket-header">
+                    <h3>Agregar Área</h3>
+                    <p>Mesa de Ayuda TI Hospitalaria</p>
+                </div>
+                <div class="ticket-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-section">
+                                <h6>
+                                    <i class="fas fa-user"></i>
+                                    Datos del Funcionario
+                                </h6>
+                                <div class="form-group row">
+                                    <label class="control-label col-md-3 col-form-label">
+                                        Nombre:
+                                    </label>
+                                    <div class="col-md-9">
+                                        {nombre}
+                                        <span><strong>Campo Obligatorio</strong></span>
+                                        <p class="pdocrud_help_block help-block form-text with-errors"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>';
+        $area->set_template($html_template_area);
         $area->colRename("id_area", "ID");
         $area->addCallback("before_insert", [$this, "insertar_area"]);
         $area->setSettings("refresh", false);
