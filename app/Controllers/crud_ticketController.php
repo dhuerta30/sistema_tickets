@@ -265,7 +265,15 @@ class crud_ticketController {
 
 
         $area = DB::ArtifyCrud();
+        $area->colRename("id_area", "ID");
         $area->addCallback("before_insert", [$this, "insertar_area"]);
+        $area->setSettings("refresh", false);
+        $area->setSettings("editbtn", true);
+        $area->setSettings("actionbtn", true);
+        $area->setSettings("searchbox", true);
+        $area->setSettings("addbtn", true);
+        $area->setSettings("delbtn", true);
+        $area->setSettings("function_filter_and_search", true);
         $render_area = $area->dbTable("area")->render();
 
         $stencil = new ArtifyStencil();
